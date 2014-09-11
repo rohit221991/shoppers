@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.shopnow.shoppers.All_shop_acitivity" >
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <Spinner
+        android:id="@+id/categories_spinner"
+        app:showAsAction="always"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+</menu>

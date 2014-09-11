@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">shoppers</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--
+      Template string with coupon title, subtitle, and sender name for the text to use
+      when the coupon is shared with other apps. [CHAR LIMIT=NONE]
+    -->
+    <string name="message_format_without_sender">Excited to redeem my coupon! <xliff:g id="coupon_title">%s</xliff:g> - <xliff:g id="coupon_subtitle">%s</xliff:g> #justforus</string>
+
+    <!--
+      Template string with coupon title, subtitle, and sender name for the text to use
+      when the coupon is shared with other apps. [CHAR LIMIT=NONE]
+    -->
+    <string name="message_format_with_sender">Excited to redeem my coupon with <xliff:g id="coupon_title">%s</xliff:g>! <xliff:g id="coupon_title">%s</xliff:g> - <xliff:g id="coupon_subtitle">%s</xliff:g> #justforus</string>
+
+    <!--
+      Title of the share intent picker dialog. Displayed above a list of apps that the
+      user can share to. [CHAR LIMIT=20]
+    -->
+    <string name="redeem_using">Redeem using</string>
+    <string name="title_activity_all_shop_acitivity">All_shop_acitivity</string>
+
+
+    <string-array name="category_array">
+        <item>Clothing</item>
+        <item>Foot Wear</item>
+        <item>Sports</item>
+
+    </string-array>
+
+</resources>
