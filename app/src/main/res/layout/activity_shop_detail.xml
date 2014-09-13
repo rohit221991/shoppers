@@ -1,0 +1,93 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.shopnow.shoppers.util.ShopDetailActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+   <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:id="@+id/Image"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:background="@drawable/overlay_bg"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <ImageButton
+                    android:id="@+id/idCallButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="0dp"
+                    android:contentDescription="Call"
+                    android:onClick="call"
+                    android:src="@drawable/phone" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Image"
+            android:id="@+id/idOffersView">
+
+            <ListView
+                android:id="@+id/idOffersList"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/list_divider"
+                android:dividerHeight="1dp"/>
+
+         </LinearLayout>
+
+
+         <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/idTimingsView"
+            android:layout_above="@+id/idOffersView">
+
+            <TextView
+                android:id="@+id/idTimingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold" />
+
+          </LinearLayout>
+
+
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/idTimingsView">
+
+         </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

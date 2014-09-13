@@ -29,9 +29,10 @@ public class ShopperContract {
         public static final String COLUMN_CONTACT = "CONTACT";
         public static final String COLUMN_URI = "URI";
         public static final String COLUMN_ADDRESS = "ADDRESS";
+        public static final String COLUMN_TIMING = "TIMING";
 
         public static String[] getShopColumns(){
-            String[] columns = {COLUMN_ID,COLUMN_MALL_ID,COLUMN_NAME,COLUMN_CONTACT,COLUMN_URI,COLUMN_ADDRESS};
+             String[] columns = {COLUMN_ID,COLUMN_MALL_ID,COLUMN_NAME,COLUMN_CONTACT,COLUMN_URI,COLUMN_ADDRESS,COLUMN_TIMING};
             return columns;
         }
     }

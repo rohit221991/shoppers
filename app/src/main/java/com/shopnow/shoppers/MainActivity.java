@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener  {
 
     // TODO: Fill in your name here
     private static final String SENDER_NAME = "Rohit Gupta";
@@ -43,6 +43,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     LayoutInflater inflater;
     Activity curr;
     AdapterView.OnItemClickListener click_listner;
+    // action bar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,10 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
         // Set a click listener for each coupon in the grid
         gridView.setOnItemClickListener(this);
+
+
+
+
     }
 
 
@@ -78,7 +83,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         database.openDatabase();
         database.addMallEntryToDatabase(1234, 72, 73, "Magrath Road", "garuda", "http://www.shopchilly.com/img/5629499534213120");
 
-        database.addShopEntryToDatabase(1,1234,"first Floor","NIKE","spa.jpg","1233456");
+       // database.addShopEntryToDatabase(1,1234,"first Floor","NIKE","spa.jpg","1233456");
         database.closeDatabase();
 
 
@@ -109,17 +114,19 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                                 String image = mall.getString("image1");
 
                                 String address = mall.getString("city");
+                                String mall_id= mall.getString("id");
                                 database.openDatabase();
-                                database.addMallEntryToDatabase(i++,i*2,i*3,address,name,image);
+                                database.addMallEntryToDatabase(Long.parseLong(mall_id),i*2,i*3,address,name,image);
                                 database.closeDatabase();
-                                GridView gridView = (GridView) findViewById(R.id.grid);
 
-                                gridView.setAdapter(new CouponAdapter(inflater, createAllCoupons()));
-                                gridView.setOnItemClickListener(click_listner);
 
 
 
                             }
+                            GridView gridView = (GridView) findViewById(R.id.grid);
+
+                            gridView.setAdapter(new CouponAdapter(inflater, createAllCoupons()));
+                            gridView.setOnItemClickListener(click_listner) ;
 
 
 
@@ -145,7 +152,14 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(req);
 
+
     }
+
+
+    /**
+     * Actionbar navigation item select listener
+     * */
+
 
 
     /**

@@ -22,6 +22,8 @@
 
     <WebCachedImageView
         android:id="@+id/image"
+        android:src="@drawable/default_bg"
+        android:background="@drawable/default_bg"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"

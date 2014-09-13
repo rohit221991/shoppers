@@ -20,7 +20,7 @@ public class ShopperDbHelper extends SQLiteOpenHelper {
 
         final String CREATE_MALL_TABLE =
                 "CREATE TABLE " + ShopperContract.MallEntry.TABLE_NAME + " ("
-                                + ShopperContract.MallEntry.COLUMN_ID  +  " INTEGER PRIMARY KEY, "
+                                + ShopperContract.MallEntry.COLUMN_ID  +  " INTEGER PRIMARY KEY ON CONFLICT REPLACE, "
                                 + ShopperContract.MallEntry.COLUMN_LATITUDE + " REAL NOT NULL, "
                                 + ShopperContract.MallEntry.COLUMN_LONGITUDE + " REAL NOT NULL, "
                                 + ShopperContract.MallEntry.COLUMN_NAME + " TEXT NOT NULL, "
@@ -35,7 +35,9 @@ public class ShopperDbHelper extends SQLiteOpenHelper {
                                 + ShopperContract.ShopEntry.COLUMN_NAME + " TEXT NOT NULL, "
                                 + ShopperContract.ShopEntry.COLUMN_CONTACT + " TEXT NOT NULL, "
                                 + ShopperContract.ShopEntry.COLUMN_URI + ", "
-                                + ShopperContract.ShopEntry.COLUMN_ADDRESS + " TEXT NOT NULL " + ");";
+                                + ShopperContract.ShopEntry.COLUMN_ADDRESS + " TEXT NOT NULL, "
+                                + ShopperContract.ShopEntry.COLUMN_TIMING + " TEXT"
+                                + ");";
 
         final String CREATE_OFFER_TABLE =
                 "CREATE TABLE " + ShopperContract.OfferEntry.TABLE_NAME + " ("
@@ -53,6 +55,7 @@ public class ShopperDbHelper extends SQLiteOpenHelper {
                                 + ShopperContract.CategoryEntry.COLUMN_MALL_ID + " INTEGER NOT NULL, "
                                 + ShopperContract.CategoryEntry.COLUMN_SHOP_ID + " INTEGER NOT NULL, "
                                 + ShopperContract.CategoryEntry.COLUMN_CATEGORY + " TEXT NOT NULL " + ");";
+
 
         sqLiteDatabase.execSQL(CREATE_MALL_TABLE);
         sqLiteDatabase.execSQL(CREATE_SHOP_TABLE);

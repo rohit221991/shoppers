@@ -3,14 +3,24 @@ package com.shopnow.shoppers.model;
 
 public class Shop {
 
+
     private int shop_id;
     private int mall_id;
     private String name;
     private String contact;
     private String uri;
     private String address;
+    private String timing;
 
-    public long getShop_id() {
+    public String getTiming() {
+        return timing;
+    }
+
+    public void setTiming(String timing) {
+        this.timing = timing;
+    }
+
+    public int getShop_id() {
         return shop_id;
     }
 
@@ -18,7 +28,7 @@ public class Shop {
         this.shop_id = shop_id;
     }
 
-    public long getMall_id() {
+    public int getMall_id() {
         return mall_id;
     }
 
@@ -57,4 +67,5 @@ public class Shop {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }

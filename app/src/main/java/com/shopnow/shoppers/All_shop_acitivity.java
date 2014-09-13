@@ -1,24 +1,24 @@
 package com.shopnow.shoppers;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WebCachedImageView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.shopnow.shoppers.adapter.TitleNavigationAdapter;
+import com.shopnow.shoppers.app.SpinnerNavItem;
 import com.shopnow.shoppers.model.Shop;
 import com.shopnow.shoppers.model.ShopperProvider;
 import com.shopnow.shoppers.util.AssetProvider;
@@ -26,15 +26,26 @@ import com.shopnow.shoppers.util.AssetProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class All_shop_acitivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class All_shop_acitivity extends ActionBarActivity implements AdapterView.OnItemClickListener ,android.app.ActionBar.OnNavigationListener {
 
     private String[] categories;
     MenuItem categories_spinner;
     Spinner cat;
-    private android.app.ActionBar actionBar;
+
+
     private List<Shop> shops;
     private String mall_id;
     private ShopperProvider database ;
+
+    // action bar
+    private ActionBar actionBar;
+
+    // Title navigation Spinner data
+    private ArrayList<SpinnerNavItem> navSpinner;
+
+    // Navigation adapter
+    private TitleNavigationAdapter adapter;
+
 
 
 
@@ -47,79 +58,52 @@ public class All_shop_acitivity extends ActionBarActivity implements AdapterView
         Intent intent = this.getIntent();
         if( intent !=  null && intent.hasExtra(Intent.EXTRA_TEXT)){
             mall_id = intent.getStringExtra(Intent.EXTRA_TEXT);
-            database.openDatabase();
-            shops=database.getShopListInAMall(Integer.parseInt(mall_id));
-            database.closeDatabase();
-
-        }
-else {
-            Log.d("All_sho activity"," else message");
-
-
+            getAllShopsInMall(mall_id);
         }
 
-/*
-        cat = (Spinner)findViewById(R.id.categories_spinner);
-
-
-        List<String> list = new ArrayList<String>();
-        list.add("clothing");
-        list.add("footwear");
-        list.add("Spinner Data");
-        list.add("Spinner Adapter");
-        list.add("Spinner Example");
-
-
-
-
-
-        actionBar= getActionBar();
-
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_LIST);
-
-        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.category_array, android.R.layout.simple_spinner_dropdown_item);
-
-        android.app.ActionBar.OnNavigationListener mOnNavigationListener = new android.app.ActionBar.OnNavigationListener() {
-            // Get the same strings provided for the drop-down's ArrayAdapter
-            String[] strings = getResources().getStringArray(R.array.category_array);
-
-            @Override
-            public boolean onNavigationItemSelected(int position, long itemId) {
-                // Create new fragment from our own Fragment class
-
-                return true;
-            }
-        };
-        */
         LayoutInflater inflater = (LayoutInflater) getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         GridView gridView = (GridView) findViewById(R.id.grid);
-
-        // Initialize the adapter with all the coupons. Set the adapter on the {@link GridView}.
         gridView.setAdapter(new CouponAdapter(inflater, createAllCoupons()));
-
-
-
-        // Set a click listener for each coupon in the grid
         gridView.setOnItemClickListener(this);
+
+
+
+        actionBar = getActionBar();
+
+        // Hide the action bar title
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        // Enabling Spinner dropdown navigation
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        // Spinner title navigation data
+        navSpinner = new ArrayList<SpinnerNavItem>();
+        navSpinner.add(new SpinnerNavItem("Food"));
+        navSpinner.add(new SpinnerNavItem("Clothing"));
+        navSpinner.add(new SpinnerNavItem("Gaming"));
+        navSpinner.add(new SpinnerNavItem("Footwear"));
+
+        // title drop down adapter
+        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
+
+        // assigning the spinner navigation
+        actionBar.setListNavigationCallbacks(adapter, this);
+
 
     }
 
 
-    void showDetailsOnScreen(String mall_id){
+    void getAllShopsInMall(String mall_id){
         database.openDatabase();
         shops=database.getShopListInAMall(Integer.parseInt(mall_id));
         database.closeDatabase();
     }
 
+    /*
     void initialize_spinner(){
         ActionBar actionBar = getSupportActionBar();
         final Context themedContext = actionBar.getThemedContext();
-//
-
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
@@ -130,96 +114,61 @@ else {
         // Initialize the adapter with all the coupons. Set the adapter on the {@link GridView}.
         gridView.setAdapter(new CouponAdapter(inflater, createAllCoupons()));
         gridView.setOnItemClickListener(this);
-
-
     }
+    */
 
-
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.all_shop_acitivity, menu);
-
         getMenuInflater().inflate( R.menu.main, menu );
-
-
-
-
-
-
         return true;
     }
+    */
 
+
+    /*
+    * implement makeJsonArrayRequest()
+    *
+    * */
+
+
+
+    /**
+     * Actionbar navigation item select listener
+     * */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        // Action to be taken after selecting a spinner item
+        return false;
     }
 
 
     private List<Coupon> createAllCoupons() {
-        // TODO: Customize this list of coupons for your personal use.
-        // You can add a title, subtitle, and a photo (in the assets directory).
         List<Coupon> coupons = new ArrayList<Coupon>();
-
-
-
-
-
         for (int i=0;i<shops.size();i++){
             Shop s = shops.get(i);
             coupons.add(new Coupon(s.getName(),s.getContact(),s.getUri()));
         }
-
-
-
         return coupons;
     }
 
 
-
-
-    /**
-     * Callback method for a when a coupon is clicked. A new share intent is created with the
-     * coupon title. Then the user can select which app to share the content of the coupon with.
-     *
-     * @param parent The AdapterView where the click happened.
-     * @param view The view within the AdapterView that was clicked (this
-     *            will be a view provided by the adapter).
-     * @param position The position of the view in the adapter.
-     * @param id The row id of the item that was clicked.
-     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Find coupon that was clicked based off of position in adapter
         Coupon coupon = (Coupon) parent.getItemAtPosition(position);
+        Intent shopDetail_intent = new Intent( this , ShopDetailActivity.class);
+        Shop current =  shops.get(position);
+        shopDetail_intent.putExtra( "SHOP_ID" , current.getShop_id());
+        shopDetail_intent.putExtra( "MALL_ID" , current.getMall_id());
+        shopDetail_intent.putExtra( "TIMING" , current.getTiming());
+        shopDetail_intent.putExtra( "ADDRESS" , current.getAddress());
+        shopDetail_intent.putExtra( "URI" , current.getUri());
 
-       /*
-        Intent shop_intent = new Intent( this , All_shop_acitivity.class);
-        shop_intent.putExtra(malls.get(position).getMall_id()+"",true);
-        startActivity(shop_intent);
-*/
-
+        startActivity(shopDetail_intent);
     }
 
-    /**
-     * Create the share intent text based on the coupon title, subtitle, and whether or not
-     * .
-     *
-     * @param coupon to create the intent text for.
-     * @return string to be used in the share intent.
-     */
 
-
-    /**
-     * Adapter for grid of coupons.
-     */
     private static class CouponAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
@@ -274,7 +223,7 @@ else {
             // Bind the data
             viewCache.mTitleView.setText(coupon.mTitle);
             viewCache.mSubtitleView.setText(coupon.mSubtitle);
-            viewCache.mImageView.setImageURI(coupon.mImageUri);
+            viewCache.mImageView.setImageUrl(coupon.image_url);
 
             return result;
         }
@@ -295,7 +244,7 @@ else {
         private final TextView mSubtitleView;
 
         /** View that displays the image associated with the coupon */
-        private final ImageView mImageView;
+        private final WebCachedImageView mImageView;
 
         /**
          * Constructs a new {@link ViewCache}.
@@ -305,7 +254,7 @@ else {
         private ViewCache(View view) {
             mTitleView = (TextView) view.findViewById(R.id.name);
             mSubtitleView = (TextView) view.findViewById(R.id.shops);
-            mImageView = (ImageView) view.findViewById(R.id.image);
+            mImageView = (WebCachedImageView) view.findViewById(R.id.image);
         }
     }
 
@@ -322,6 +271,7 @@ else {
 
         /** Content URI of the image for the coupon. */
         private final Uri mImageUri;
+        String image_url;
 
         /**
          * Constructs a new {@link Coupon}.
@@ -336,7 +286,7 @@ else {
             mSubtitle = subtitleString;
             mImageUri = Uri.parse("content://" + AssetProvider.CONTENT_URI + "/" +
                     imageAssetFilePath);
+            image_url=imageAssetFilePath;
         }
     }
-
 }

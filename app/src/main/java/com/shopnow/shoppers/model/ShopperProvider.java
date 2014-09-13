@@ -29,7 +29,7 @@ public class ShopperProvider {
         dbHelper.close();
     }
 
-    public long addMallEntryToDatabase( int ID, double longitude, double latitude , String address, String mall_name, String uri ){
+    public long addMallEntryToDatabase( long ID, double longitude, double latitude , String address, String mall_name, String uri ){
         Log.d(getClass().getSimpleName(), " INSERT MALL ENTRY REQUEST");
         ContentValues values = new ContentValues();
         values.put(ShopperContract.MallEntry.COLUMN_ID, ID);
@@ -41,7 +41,7 @@ public class ShopperProvider {
         return database.insert(ShopperContract.MallEntry.TABLE_NAME, null, values);
     }
 
-    public long addShopEntryToDatabase( int ID, int MALL_ID, String address, String shop_name, String uri, String contact ){
+    public long addShopEntryToDatabase( long ID, long MALL_ID, String address, String shop_name, String uri, String contact, String timing ){
         Log.d(getClass().getSimpleName(), " INSERT SHOP ENTRY REQUEST");
         ContentValues values = new ContentValues();
         values.put(ShopperContract.ShopEntry.COLUMN_ID, ID);
@@ -50,10 +50,11 @@ public class ShopperProvider {
         values.put(ShopperContract.ShopEntry.COLUMN_NAME, shop_name);
         values.put(ShopperContract.ShopEntry.COLUMN_URI, uri);
         values.put(ShopperContract.ShopEntry.COLUMN_CONTACT, contact);
+        values.put(ShopperContract.ShopEntry.COLUMN_TIMING, timing);
         return database.insert(ShopperContract.ShopEntry.TABLE_NAME, null, values);
     }
 
-    public long addOfferEntryToDatabase( int MALL_ID, int SHOP_ID, int offer_id, String description, String TC, String uri, String from, String to){
+    public long addOfferEntryToDatabase( long MALL_ID, long SHOP_ID, long offer_id, String description, String TC, String uri, String from, String to){
         Log.d(getClass().getSimpleName(), " INSERT OFFER ENTRY REQUEST");
         ContentValues values = new ContentValues();
         values.put(ShopperContract.OfferEntry.COLUMN_ID, offer_id);
@@ -120,6 +121,33 @@ public class ShopperProvider {
         return shops;
     }
 
+    public List<Offer> getAllOffers( int MALL_ID, int SHOP_ID){
+        List<Offer> offers = new ArrayList<Offer>();
+        String query = "SELECT * FROM " + ShopperContract.OfferEntry.TABLE_NAME + " WHERE " + ShopperContract.OfferEntry.COLUMN_MALL_ID + " = " + MALL_ID + " AND " + ShopperContract.OfferEntry.COLUMN_SHOP_ID + " = " + SHOP_ID;
+        Cursor cursor = database.rawQuery(query , null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Offer offer = convertCursorToOffer(cursor);
+            offers.add(offer);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return offers;
+    }
+
+
+    private Offer convertCursorToOffer(Cursor cursor){
+       Offer offer = new Offer();
+        offer.setMALL_ID(cursor.getInt(1));
+        offer.setSHOP_ID(cursor.getInt(2));
+        offer.setID(cursor.getInt(0));
+        offer.setDESCRIPTION(cursor.getString(3));
+        offer.setTC(cursor.getString(4));
+        offer.setVALID_FROM(cursor.getString(6));
+        offer.setVALID_TO(cursor.getString(7));
+        return offer;
+    }
+
 
     private Mall convertCursorToMall(Cursor cursor) {
         Mall mall = new Mall();
@@ -140,6 +168,7 @@ public class ShopperProvider {
         shop.setContact(cursor.getString(3));
         shop.setUri(cursor.getString(4));
         shop.setAddress(cursor.getString(5));
+        shop.setTiming(cursor.getString(6));
         return shop;
     }
 
